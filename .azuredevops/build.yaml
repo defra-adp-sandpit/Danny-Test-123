@@ -1,0 +1,62 @@
+parameters:
+  - name: deployFromFeature
+    displayName: "Deploy from Feature Branch"
+    type: boolean
+    default: false
+  - name: deployConfigOnly
+    displayName: "Deploy App Config & Secrets Only"
+    type: boolean
+    default: false     
+pr:
+  branches:
+    include:
+      - main
+      - master
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+  drafts: false
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - "*"
+  paths:
+    exclude:
+      - test-output/*
+      - bin/*
+      - obj/*
+
+resources:
+  repositories:
+    - repository: DEFRA-ADPPipelineCommon
+      name: DEFRA/adp-pipeline-common
+      endpoint: DEFRA-ADP
+      type: github
+      ref: refs/tags/1.0.0-latest
+
+extends:
+  template: /pipelines/common-app-build.yaml@DEFRA-ADPPipelineCommon
+  parameters:
+    programmeName: ""
+    teamName: eutd-adp-test
+    serviceName: Danny-Test
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    deployConfigOnly: ${{ parameters.deployConfigOnly }}
+    appBuildConfig:
+      appFrameworkType: "dotnet"
+      frameworkVersion: "8.x"    
+      projectPath: "./src/Danny.Test.Api/Danny.Test.Api.csproj"
+      testProjectPath: "**/*.Tests.csproj" 
+      manifestPath: "./src/obj/Danny.Test.Api/project.assets.json;./src/obj/Danny.Test.Core/project.assets.json"
+      imageRepoName: Danny-Test
+    appTestConfig:
+      testFilePath: ""
+    appDeployConfig:
+      filepath: "./appConfig"
+      filetype: "yaml" 
+      # variableGroups: 
+      #   - Danny-Test-<environment>

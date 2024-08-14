@@ -1,0 +1,10 @@
+services:
+  ? Danny-Test
+  : build:
+      context: .
+      target: production
+    image: Danny-Test
+    container_name: Danny-Test
+    environment:
+      APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
+      APPINSIGHTS_CLOUDROLE: Danny-Test-local

@@ -1,0 +1,24 @@
+services:
+  ? Danny-Test-core-tests
+  : build:
+      target: development
+    image: Danny-Test-core-tests-development
+    container_name: Danny-Test-core-tests
+    user: root
+    entrypoint: sh -c "cd /home/dotnet && chown -R dotnet:dotnet . && su dotnet -c 'dotnet watch --project test/Danny.Test.Core.Tests/Danny.Test.Core.Tests.csproj test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./test-output/'"
+    volumes:
+      - ./src/Danny.Test.Core:/home/dotnet/src/Danny.Test.Core
+      - ./test/Danny.Test.Core.Tests:/home/dotnet/test/Danny.Test.Core.Tests
+      - ./test-output:/home/dotnet/Danny.Test.Core.Tests/test-output
+
+  ? Danny-Test-api-tests
+  : build:
+      target: development
+    image: Danny-Test-api-tests-development
+    container_name: Danny-Test-api-tests
+    user: root
+    entrypoint: sh -c "cd /home/dotnet && chown -R dotnet:dotnet . && su dotnet -c 'dotnet watch --project test/Danny.Test.Api.Tests/Danny.Test.Api.Tests.csproj test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./test-output/'"
+    volumes:
+      - ./src/Danny.Test.Api:/home/dotnet/src/Danny.Test.Api
+      - ./test/Danny.Test.Api.Tests:/home/dotnet/test/Danny.Test.Api.Tests
+      - ./test-output:/home/dotnet/Danny.Test.Api.Tests/test-output

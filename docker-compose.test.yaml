@@ -1,0 +1,16 @@
+services:
+  ? Danny-Test
+  : build:
+      target: development
+    image: Danny-Test-development
+    container_name: Danny-Test-test
+    user: root
+    entrypoint: sh -c "cd /home/dotnet && chown -R dotnet:dotnet . && su dotnet -c 'dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./test-output/'"
+    volumes:
+      - ./Danny.Test.sln:/home/dotnet/Danny.Test.sln
+      - ./src/Danny.Test.Core:/home/dotnet/src/Danny.Test.Core
+      - ./test/Danny.Test.Core.Tests:/home/dotnet/test/Danny.Test.Core.Tests
+      - ./src/Danny.Test.Api:/home/dotnet/src/Danny.Test.Api
+      - ./test/Danny.Test.Api.Tests:/home/dotnet/test/Danny.Test.Api.Tests
+      - ./test/Danny.Test.Api.Tests/test-output:/home/dotnet/test/Danny.Test.Api.Tests/test-output
+      - ./test/Danny.Test.Core.Tests/test-output:/home/dotnet/test/Danny.Test.Core.Tests/test-output

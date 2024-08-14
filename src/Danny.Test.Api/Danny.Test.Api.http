@@ -1,0 +1,32 @@
+@Danny.Test.Api_HostAddress = https://localhost:7118
+
+GET {{Danny.Test.Api_HostAddress}}/api/demo
+
+###
+
+POST {{Danny.Test.Api_HostAddress}}/api/demo
+Content-Type: application/json
+
+{
+    "name":"item3"
+}
+
+###
+
+PATCH {{Danny.Test.Api_HostAddress}}/api/demo
+Content-Type: application/json
+
+{
+    "id":"1",
+    "name":"item3"
+}
+
+###
+
+GET {{Danny.Test.Api_HostAddress}}/api/demo/1
+
+###
+
+DELETE {{Danny.Test.Api_HostAddress}}/api/demo/3
+
+###
